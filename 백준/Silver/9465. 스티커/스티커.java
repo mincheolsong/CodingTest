@@ -35,11 +35,9 @@ public class Main {
             for(int c=1;c<N;c++){
                 for(int r=0;r<2;r++){
                     if(r==0){
-                        dp[r][c] = Math.max(c-1>=0?dp[1][c-1]:0,c-2>=0?dp[1][c-2]:0);
-                        dp[r][c] = Math.max(dp[r][c],c-2>=0?dp[0][c-2]:0) + arr[r][c];
+                        dp[r][c] = Math.max(c-1>=0?dp[1][c-1]:0,c-2>=0?dp[1][c-2]:0) + arr[r][c];
                     }else if(r==1){
-                        dp[r][c] = Math.max(c-1>=0?dp[0][c-1]:0,c-2>=0?dp[0][c-2]:0);
-                        dp[r][c] = Math.max(dp[r][c],c-2>=0?dp[1][c-2]:0) + arr[r][c];
+                        dp[r][c] = Math.max(c-1>=0?dp[0][c-1]:0,c-2>=0?dp[0][c-2]:0) + arr[r][c];
                     }
                 }
             }
