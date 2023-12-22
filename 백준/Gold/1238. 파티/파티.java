@@ -23,7 +23,7 @@ public class Main {
 
             if(cur.idx==X){
                 // 도착 지점
-                depart[start]=dist[cur.idx] < cur.w ? dist[cur.idx] : cur.w;
+                depart[start]=cur.w;
                 return;
             }
 
