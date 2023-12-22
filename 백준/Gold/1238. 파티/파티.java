@@ -3,15 +3,13 @@ import java.util.*;
 
 public class Main {
 
-    // 다익스트라?
-    // 다른 학생 집에서 X집에 가는 경우 다익스트라
-    // X집에서 다른 학생 집으로 가는 경우 다익스트라
+    
     static final int INF = (int)1e9;
     static int N,M,X;
     static List<Node>[] adj;
-    static int depart[];
+    static List<Node>[] rev_adj;
 
-    static void depart(int start){
+    static int[] dijkstra(List<Node>[] adj_list, int start){
         int[] dist = new int[N+1];
         Arrays.fill(dist,INF);
         PriorityQueue<Node> pq = new PriorityQueue<>();
@@ -21,17 +19,11 @@ public class Main {
         while(!pq.isEmpty()){
             Node cur = pq.poll();
 
-            if(cur.idx==X){
-                // 도착 지점
-                depart[start]=cur.w;
-                return;
-            }
-
             if(dist[cur.idx] < cur.w){ // 이미 처리된 노드는 무시
                 continue;
             }
 
-            for(Node node : adj[cur.idx]){
+            for(Node node : adj_list[cur.idx]){
                 int cost = cur.w + node.w;
                 if(cost < dist[node.idx]){
                     dist[node.idx]=cost;
@@ -41,33 +33,9 @@ public class Main {
 
         }
 
-    }
-
-    static int[] arrive(int start){
-        int[] dist = new int[N+1];
-        Arrays.fill(dist,INF);
-        PriorityQueue<Node> pq = new PriorityQueue<>();
-        pq.offer(new Node(start,0));
-        dist[start]=0;
-
-        while(!pq.isEmpty()){
-            Node cur = pq.poll();
-
-            if(dist[cur.idx] < cur.w){
-                continue;
-            }
-
-            for(Node node : adj[cur.idx]){
-                int cost = cur.w + node.w;
-                if(cost < dist[node.idx]){
-                    dist[node.idx] = cost;
-                    pq.offer(new Node(node.idx,cost));
-                }
-            }
-        }
-
         return dist;
     }
+
 
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -78,10 +46,11 @@ public class Main {
         X = Integer.parseInt(st.nextToken());
 
         adj = new ArrayList[N+1];
-        depart = new int[N+1];
+        rev_adj = new ArrayList[N+1];
 
         for(int i=1;i<N+1;i++){
             adj[i] = new ArrayList<>();
+            rev_adj[i] = new ArrayList<>();
         }
 
         for(int i=0;i<M;i++){
@@ -92,15 +61,11 @@ public class Main {
             w = Integer.parseInt(st.nextToken());
 
             adj[from].add(new Node(to,w));
+            rev_adj[to].add(new Node(from,w));
         }
 
-        for(int i=1;i<N+1;i++){
-            if(i!=X) {
-                depart(i);
-            }
-        }
-
-        int[] arrive = arrive(X);
+        int[] depart = dijkstra(rev_adj,X);
+        int[] arrive = dijkstra(adj,X);
         int ans = 0;
 
         for(int i=1;i<N+1;i++){
