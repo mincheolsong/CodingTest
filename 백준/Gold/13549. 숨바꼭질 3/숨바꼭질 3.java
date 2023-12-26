@@ -18,12 +18,12 @@ public class Main {
                 q.offer(new int[]{idx-1,w+1});
                 memo[idx-1]=w+1;
             }
-            if(idx+1<=100001 && (memo[idx+1]==-1 || w+1 < memo[idx+1])){
+            if(idx+1<=100000 && (memo[idx+1]==-1 || w+1 < memo[idx+1])){
                 q.offer(new int[]{idx+1,w+1});
                 memo[idx+1]=w+1;
             }
 
-            if(idx*2 <= 100001 &&  (memo[idx*2]==-1 || w < memo[idx*2])){
+            if(idx*2 <= 100000 &&  (memo[idx*2]==-1 || w < memo[idx*2])){
                 q.offer(new int[]{idx*2,w});
                 memo[idx*2] = w;
             }
@@ -38,7 +38,7 @@ public class Main {
         if (N >= K) {
             System.out.println(N - K);
         } else {
-            memo = new int[100002];
+            memo = new int[100001];
             Arrays.fill(memo, -1);
             memo[N] = 0;
             q.offer(new int[]{N, 0});
