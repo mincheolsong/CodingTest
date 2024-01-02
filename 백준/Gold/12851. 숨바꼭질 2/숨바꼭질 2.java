@@ -23,16 +23,19 @@ public class Main {
 
             if(dist[cur.idx] < cur.w) continue; // 방문체크
 
+            if(cur.w > dist[K]){ // 이거 추가함 
+                return;
+            }
 
-            if(cur.idx-1 >= 0 && cur.w + 1 <= dist[cur.idx-1]){ // 기존 다익스트라는 < 이지만, 모든 경우를 보기 위해서 <=
+            if(cur.idx-1 >= 0 && cur.w + 1 <= dist[cur.idx-1]){
                 dist[cur.idx-1] = cur.w + 1;
                 pq.offer(new Node(cur.idx-1,cur.w+1));
             }
-            if(cur.idx+1 <= 100000 && cur.w + 1 <= dist[cur.idx+1]){ // 기존 다익스트라는 < 이지만, 모든 경우를 보기 위해서 <=
+            if(cur.idx+1 <= 100000 && cur.w + 1 <= dist[cur.idx+1]){
                 dist[cur.idx+1] = cur.w + 1;
                 pq.offer(new Node(cur.idx+1,cur.w+1));
             }
-            if(cur.idx*2 <= 100000 && cur.w + 1 <= dist[cur.idx*2]){ // 기존 다익스트라는 < 이지만, 모든 경우를 보기 위해서 <=
+            if(cur.idx*2 <= 100000 && cur.w + 1 <= dist[cur.idx*2]){
                 dist[cur.idx*2] = cur.w + 1;
                 pq.offer(new Node(cur.idx*2,cur.w+1));
             }
