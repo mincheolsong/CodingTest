@@ -5,11 +5,9 @@ public class Main {
 
     // 백준 2638 치즈
     // BFS
-    // (0,0)에서 BFS를 시작
-    // BFS를 한 턴씩 수행해야 함 (큐 사이즈 만큼)
-    // 닿은지점은 -1, 치즈인 지점은 ++, 3이면 치즈 녹이기 (-1로 바꾸기)
-    // 치즈 녹으면 전체 치즈갯수-=1
-    // 전체 치즈갯수가 0이되면 함수 종료
+    // 1. (0,0)에서 bfs를 수행하여 치즈의 테두리를 구함
+    // 2. 구해진 치즈 테두리를 확인하며 녹이기
+    // 3. 치즈가 0개가 될때 까지 1, 2 계속 반복
 
     static final int[] dr = {-1,0,1,0};
     static final int[] dc = {0,1,0,-1};
@@ -18,26 +16,6 @@ public class Main {
     static boolean[][] visited;
     static int cheese; // 전체 치즈 갯수
     static int time;
-
-    static void print(int[][] a){
-        for(int[] t : a){
-            for(int k : t){
-                System.out.print(k + "\t");
-            }
-            System.out.println();
-        }
-        System.out.println("-----------");
-    }
-    static int[][] clone(int[][] a){
-        int[][] result = new int[N][M];
-        for(int i=0;i<N;i++){
-            for(int j=0;j<M;j++){
-                result[i][j] = a[i][j];
-            }
-        }
-
-        return result;
-    }
 
     static Deque<Point> spread(){ // 테두리 반환
 
@@ -80,6 +58,7 @@ public class Main {
 
         return wrap;
     }
+    
     static void bfs(){
 
         for(int i=0;i<(N-1)*(M-1);i++){
