@@ -17,6 +17,26 @@ public class Main {
     static int cheese; // 전체 치즈 갯수
     static int time;
 
+    static void print(int[][] a){
+        for(int[] t : a){
+            for(int k : t){
+                System.out.print(k + "\t");
+            }
+            System.out.println();
+        }
+        System.out.println("-----------");
+    }
+    static int[][] clone(int[][] a){
+        int[][] result = new int[N][M];
+        for(int i=0;i<N;i++){
+            for(int j=0;j<M;j++){
+                result[i][j] = a[i][j];
+            }
+        }
+
+        return result;
+    }
+
     static Deque<Point> spread(){ // 테두리 반환
 
         visited = new boolean[N][M];
@@ -58,7 +78,6 @@ public class Main {
 
         return wrap;
     }
-    
     static void bfs(){
 
         for(int i=0;i<(N-1)*(M-1);i++){
@@ -78,7 +97,7 @@ public class Main {
                     if(nr<0 || nr>=N) continue;
                     if(nc<0 || nc>=M) continue;
 
-                    if(arr[nr][nc]==0 && visited[nr][nc]){
+                    if(arr[nr][nc]==0 && visited[nr][nc]){ // 외부 공기와 닿아야 하기 때문에
                         arr[cr][cc]+=1;
                     }
                 }
