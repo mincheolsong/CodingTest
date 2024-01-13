@@ -1,43 +1,51 @@
 import java.io.*;
 import java.util.*;
 
+class Node{
+    int from, to, w;
+
+    public Node(int from, int to, int w){
+        this.from = from;
+        this.to = to;
+        this.w = w;
+    }
+
+}
+
 public class Main {
 
-    // 플로이드워셜
-    // A -> X -> A 가 - 인 경우가 있으면 YES 없으면 NO
+    // 벨만포드
     static final int INF = (int)1e9;
     static int N,M,W;
-    static int[][] graph;
+    static List<Node> graph;
+    static int[] dist;
 
-    static void check(){
+    static boolean solve(){
+        Arrays.fill(dist,INF);
+        dist[1]=0; // 시작정점은 1로 (아무거나) 초기화
 
-        for(int i=1;i<N+1;i++){
-            if(graph[i][i]<0){
-                System.out.println("YES");
-                return;
-            }
-        }
-        System.out.println("NO");
-    }
-    static void floyd(){
+        for(int i=1;i<=N;i++){
 
-        for(int k=1;k<N+1;k++){
-            for(int i=1;i<N+1;i++){
-                for(int j=1;j<N+1;j++){
-                    if(graph[i][k]==INF || graph[k][j]==INF) continue;
-                    /*if(i==2 && j==3){
-                        System.out.println("k = " + k);
-                        System.out.println("graph[i][j] : " + graph[i][j] + ", " +
-                                "graph[2][k] : " + graph[i][k] + ", " + "graph[k][3] : " + graph[k][j] +
-                                ", graph[i][k] + graph[k][j] : " + (graph[i][k] + graph[k][j])
-                        );
+            boolean chk = false;
 
-                    }*/
-                    graph[i][j] = Math.min(graph[i][j],graph[i][k] + graph[k][j]);
+            for(int j=0;j<graph.size();j++){ // 모든 간선
+                Node node = graph.get(j);
+
+                if(dist[node.to] > dist[node.from] + node.w){
+                    dist[node.to] = dist[node.from] + node.w;
+                    chk = true;
+
+                    if(i==N){ // N번째에도 갱신이 일어나면 음수 순환이 있음
+                        return true;
+                    }
                 }
             }
-        }
+            if(!chk){ // chk가 false이면 더 이상 간선이 업데이트될 게 없기 때문에, 더 반복문을 돌릴 필요가 없다.
+                break;
+            }
 
+        }
+        return false;
     }
 
     public static void main(String[] args) throws IOException {
@@ -51,11 +59,9 @@ public class Main {
             N = Integer.parseInt(st.nextToken());
             M = Integer.parseInt(st.nextToken());
             W = Integer.parseInt(st.nextToken());
-            graph = new int[N+1][N+1];
-            for(int i=1;i<N+1;i++){
-                Arrays.fill(graph[i],INF);
-                graph[i][i]=0;
-            }
+
+            graph = new ArrayList<>();
+            dist = new int[N+1];
 
 
             for(int m=0;m<M;m++){
@@ -63,8 +69,8 @@ public class Main {
                 int from = Integer.parseInt(st.nextToken());
                 int to = Integer.parseInt(st.nextToken());
                 int weight = Integer.parseInt(st.nextToken());
-                graph[from][to] = weight < graph[from][to] ? weight : graph[from][to];
-                graph[to][from] = weight < graph[to][from] ? weight : graph[to][from];
+                graph.add(new Node(from,to,weight));
+                graph.add(new Node(to,from,weight));
             }
 
             for(int w=0;w<W;w++){
@@ -72,21 +78,16 @@ public class Main {
                 int from = Integer.parseInt(st.nextToken());
                 int to = Integer.parseInt(st.nextToken());
                 int weight = Integer.parseInt(st.nextToken());
-                graph[from][to] = -weight < graph[from][to] ? -weight : graph[from][to];
+                graph.add(new Node(from,to,-weight));
             }
 
-          /*  for(int i=0;i<N+1;i++){
-                System.out.println(Arrays.toString(graph[i]));
+            boolean ans = solve();
+            if(ans){
+                System.out.println("YES");
+            }else{
+                System.out.println("NO");
             }
-            System.out.println("=========");*/
-            // 입력 끝
-            floyd();
 
-            /*for(int i=0;i<N+1;i++){
-                System.out.println(Arrays.toString(graph[i]));
-            }*/
-
-            check();
 
         }
 
