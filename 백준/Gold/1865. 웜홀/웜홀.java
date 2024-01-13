@@ -54,6 +54,7 @@ public class Main {
             graph = new int[N+1][N+1];
             for(int i=1;i<N+1;i++){
                 Arrays.fill(graph[i],INF);
+                graph[i][i]=0;
             }
 
 
