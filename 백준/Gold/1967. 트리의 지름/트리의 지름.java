@@ -17,6 +17,7 @@ public class Main {
     static int ans;
     static Set<int[]> set;
     static boolean[] visited;
+    static boolean[] isLeaf;
 
     static void dfs(int n,int s){
 
@@ -38,6 +39,8 @@ public class Main {
         tree = new ArrayList[n+1];
         ans = 0;
         set = new HashSet<>();
+        isLeaf = new boolean[n+1];
+        Arrays.fill(isLeaf,true);
 
         for(int i=1;i<n+1;i++){
             tree[i] = new ArrayList<>();
@@ -50,12 +53,15 @@ public class Main {
             int w = Integer.parseInt(st.nextToken());
             tree[p].add(new Node(c,w));
             tree[c].add(new Node(p,w));
+            isLeaf[p]=false;
         }
 
         for(int i=1;i<n+1;i++){
-            visited = new boolean[n+1];
-            visited[i]=true;
-            dfs(i,0);
+            if(isLeaf[i]){
+                visited = new boolean[n+1];
+                visited[i]=true;
+                dfs(i,0);
+            }
         }
 
         System.out.println(ans);
