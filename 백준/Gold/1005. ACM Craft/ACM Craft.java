@@ -1,46 +1,47 @@
 import java.io.*;
 import java.util.*;
 
-class Node{
-    int n, w;
-    public Node(int n, int w){
-        this.n = n;
-        this.w = w;
-    }
 
-}
 
 
 public class Main {
 
     static int N,K,W;
-    static int[] build;
-    static List<Node>[] graph;
-    static int[] ans;
-    static int[] cnt; // 해당 노드를 도달하기 위해 필요한 선행노드 갯수를 저장하는 배열
-    static Deque<Node> q;
 
-    static void bfs(){
-        if(cnt[W]==0){
-            ans[W] = build[W];
-            return;
+    static List<Integer>[] graph;
+    static int[] d;
+    static int[] indegree;
+    static int[] result;
+
+    static void solve(){
+        Deque<Integer> q = new ArrayDeque<>();
+
+        for(int i=1;i<N+1;i++){
+            result[i] = d[i];
+            if(indegree[i]==0){
+                q.offer(i);
+            }
         }
 
         while(!q.isEmpty()){
-            Node cur = q.pollFirst();
+            int node = q.pollFirst();
 
-            if(ans[cur.n] > cur.w) continue;
+            for(Integer i : graph[node]){
+                if(result[i] < result[node] + d[i]){
+                    result[i] = result[node] + d[i];
+                }
+                indegree[i]--;
 
-            for(Node l : graph[cur.n]){
-                if(ans[l.n] < cur.w + l.w){
-                    ans[l.n] = cur.w + l.w;
-                    q.offer(new Node(l.n,ans[l.n]));
+                if(indegree[i]==0){
+                    q.offer(i);
                 }
             }
-
-
         }
+
+
     }
+
+
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -52,10 +53,11 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             N = Integer.parseInt(st.nextToken());
             K = Integer.parseInt(st.nextToken());
-            build = new int[N+1];
             graph = new ArrayList[N+1];
-            ans = new int[N+1];
-            cnt = new int[N+1];
+            d = new int[N+1];
+            indegree = new int[N+1];
+            result = new int[N+1];
+
 
             for(int i=1;i<N+1;i++){
                 graph[i] = new ArrayList<>();
@@ -63,27 +65,24 @@ public class Main {
 
             st = new StringTokenizer(br.readLine());
             for(int i=1;i<N+1;i++){
-                build[i] = Integer.parseInt(st.nextToken());
+                d[i] = Integer.parseInt(st.nextToken());
             }
+
+
             for(int i=0;i<K;i++){
                 st = new StringTokenizer(br.readLine());
                 int from = Integer.parseInt(st.nextToken());
                 int to = Integer.parseInt(st.nextToken());
-                graph[from].add(new Node(to,build[to]));
-                cnt[to]+=1;
+                graph[from].add(to);
+                indegree[to]++;
             }
+
             W = Integer.parseInt(br.readLine());
-            q = new ArrayDeque<>();
 
-            for(int i=1;i<N+1;i++){
-                if(cnt[i]==0){
-                    ans[i] = build[i];
-                    q.offer(new Node(i,ans[i]));
-                }
-            }
-            bfs();
+            solve();
 
-            System.out.println(ans[W]);
+            System.out.println(result[W]);
+
 
         }
     }
