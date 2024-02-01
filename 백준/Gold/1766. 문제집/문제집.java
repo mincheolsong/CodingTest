@@ -10,6 +10,7 @@ public class Main {
     static List<Integer>[] adj;
     static int[] indegree;
     static Deque<Integer> answer;
+    static StringBuilder sb;
 
     static void solve(){
         PriorityQueue<Integer> pq = new PriorityQueue<>((o1,o2)->(o1-o2));
@@ -22,7 +23,7 @@ public class Main {
 
         while(!pq.isEmpty()){
             int cur = pq.poll();
-            answer.offer(cur);
+            sb.append(cur).append(" ");
 
             for(Integer i : adj[cur]){
                 if(--indegree[i]==0){
@@ -42,6 +43,7 @@ public class Main {
         adj = new List[N+1];
         indegree = new int[N+1];
         answer = new ArrayDeque();
+        sb = new StringBuilder();
 
         for(int i=1;i<N+1;i++){
             adj[i] = new ArrayList<>();
@@ -57,9 +59,7 @@ public class Main {
 
         solve();
 
-        while(!answer.isEmpty()){
-            System.out.print(answer.pollFirst() + " ");
-        }
+        System.out.println(sb.toString());
 
 
 
