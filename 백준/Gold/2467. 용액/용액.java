@@ -6,32 +6,35 @@ public class Main {
 
     static int N;
     static int[] arr;
-    static int ans;
-    static int[] liquid;
+    static int[] ans;
+    static int min;
 
     static void solve(){
+
         int left = 0, right = N-1;
 
         while(left<right){
             int cur = arr[left]+arr[right];
 
-            if(Math.abs(cur) < ans){
-                ans = Math.abs(cur);
-                liquid[0] = arr[left];
-                liquid[1] = arr[right];
+            if(Math.abs(cur) < min){
+                min = Math.abs(cur);
+                ans[0] = arr[left];
+                ans[1] = arr[right];
             }
 
-            if(cur==0){
+            if(cur == 0){
                 return;
             }
 
-            if(cur > 0){
-                right-=1;
-            }else if(cur < 0){
+            if(cur < 0){
                 left+=1;
+            }else{
+                right-=1;
             }
+
         }
     }
+
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -39,16 +42,18 @@ public class Main {
 
         N = Integer.parseInt(br.readLine());
         arr = new int[N];
-        st = new StringTokenizer(br.readLine());
-        liquid = new int[2];
+        ans = new int[2];
+        min = 2_000_000_000;
 
+        st = new StringTokenizer(br.readLine());
         for(int i=0;i<N;i++){
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        ans = 2_000_000_000;
         solve();
-        System.out.println(liquid[0] + " " + liquid[1]);
+
+        System.out.println(ans[0] + " " + ans[1]);
+
 
 
 
