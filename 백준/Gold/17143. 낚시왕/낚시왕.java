@@ -1,8 +1,6 @@
 import java.io.*;
 import java.util.*;
 
-
-
 public class Main {
 
 
@@ -68,12 +66,6 @@ public class Main {
         sharks = new Shark[M+1];
         ans = 0;
 
-        /*for(int i=1;i<R+1;i++){
-            for(int j=1;j<C+1;j++){
-                arr[i][j] = new ArrayList<>();
-            }
-        }*/
-
         for(int i=1;i<M+1;i++){
             st = new StringTokenizer(br.readLine());
             int r,c,s,d,z;
@@ -106,27 +98,36 @@ public class Main {
             this.size = size;
         }
 
-        public void move(){
-            for(int s=0;s<speed;s++){
-                this.r += dr[d];
-                this.c += dc[d];
+        public void move() {
 
-                if(r==R+1){
-                    r = R-1;
-                    d = 1;
-                }else if(r==0){
-                    r = 2;
-                    d = 2;
-                }else if(c==C+1){
-                    c = C-1;
-                    d = 4;
-                }else if(c==0){
-                    c = 2;
-                    d = 3;
+            if(d==1 || d==2){
+                int s = speed % (R*2-2);
+                for(int i=0;i<s;i++){
+                    r += dr[d];
+                    if(r==0){
+                        r = 2;
+                        d = 2;
+                    }else if(r==R+1){
+                        r = R-1;
+                        d = 1;
+                    }
                 }
-
+            }else if(d==3 || d==4){
+                int s = speed % (C*2-2);
+                for(int i=0;i<s;i++){
+                    c += dc[d];
+                    if(c==0){
+                        c = 2;
+                        d = 3;
+                    }else if(c==C+1){
+                        c = C-1;
+                        d = 4;
+                    }
+                }
             }
+
         }
+
 
         @Override
         public String toString(){
