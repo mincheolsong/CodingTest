@@ -10,7 +10,7 @@ public class Main {
 
     static void check(int[][] array,int row,int col,int cnt){
 
-        if(col>=N){
+        if(col==N){
             ans+=1;
             return;
         }
