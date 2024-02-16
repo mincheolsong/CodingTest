@@ -10,9 +10,9 @@ public class Main {
     static int ans;
     static final int INF = (int)1e9;
 
-    static boolean go(int row, int col,int start){ // (1, num)위치에서 시작
+    static boolean go(int row, int col,int start){ // (1행, col열, 시작위치)
 
-        if(arr[row][col]==9 && start==col){
+        if(arr[row][col]==9 && start==col){ // 끝 까지 내려갔는데 시작 위치 열에 도착한 경우
             return true;
         }
 
@@ -29,37 +29,38 @@ public class Main {
     }
     static boolean check(){
 
-        for(int i=1;i<N+1;i++){ // (1행, i열) 에서 출발 시키기
-            if(!go(1,i,i)){
+        for(int i=1;i<N+1;i++){
+            if(!go(1,i,i)){ // (1행, i열, 시작위치) 에서 출발 시키기
                 return false;
             }
         }
 
         return true;
     }
-    static void solve(int n, int row){
+    static boolean solve(int n, int row, int cnt){
 
-        if(n>3){
-            return;
+        if(n==cnt){
+            if(check()){
+                ans = Math.min(ans,n);
+                return true;
+            }
+            return false;
         }
 
-        if(check()){
-            ans = Math.min(ans,n);
-            return;
-        }
 
         for(int i=row;i<H+1;i++){
             for(int j=1;j<N;j++){
                 if(arr[i][j]==0 && arr[i][j+1]==0){
                     // 다리 놓기
-                    arr[i][j]=1;
-                    arr[i][j+1]=2;
-                    solve(n+1,i);
+                    arr[i][j]=1; // 1을 만나면 오른쪽으로 이동
+                    arr[i][j+1]=2; // 2를 만나면 왼쪽으로 이동
+                    if(solve(n+1,i,cnt)) return true;
                     arr[i][j]=0;
                     arr[i][j+1]=0;
                 }
             }
         }
+        return false;
     }
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -79,7 +80,11 @@ public class Main {
             arr[a][b+1] = 2;
         }
         Arrays.fill(arr[H+1],9);
-        solve(0,1);
+        
+        for(int i=0;i<=3;i++){
+            if(solve(0,1,i)) break;    
+        }
+        
 
         if(ans==INF) ans = -1;
 
