@@ -34,9 +34,18 @@ public class Main {
         }
     }
 
-    static void melt(int r,int c){
+    static void melt(){
         Deque<int[]> q = new ArrayDeque<>();
-        q.offer(new int[]{r,c});
+        visited = new boolean[N][M];
+
+        for(int i=0;i<N;i++){
+            for(int j=0;j<M;j++){
+                if(map[i][j]!=0){
+                    q.offer(new int[]{i,j});
+                    visited[i][j]=true;
+                }
+            }
+        }
 
         while(!q.isEmpty()){
             int[] cur = q.pollFirst();
@@ -51,14 +60,12 @@ public class Main {
                 if(visited[nr][nc]) continue;
 
                 if(map[nr][nc]==0) {
-                    visited[nr][nc]=true;
-                    q.offer(new int[]{nr,nc});
-                }else{
-                    map[nr][nc]-=1;
-                    if(map[nr][nc]==0){ // 이번 턴에서 0이 된 칸은 방문처리 해서 bfs가 방문하지 못하게 해야 함
-                        visited[nr][nc]=true;
+                    map[cr][cc]-=1;
+                    if(map[cr][cc]==0){
+                        break;
                     }
                 }
+
             }
         }
     }
@@ -66,16 +73,7 @@ public class Main {
 
         while(true){
 
-            visited = new boolean[N][M];
-            for(int i=0;i<N;i++){
-                for(int j=0;j<M;j++){
-                    if(!visited[i][j] && map[i][j]==0){
-                        visited[i][j]=true;
-                        melt(i,j);
-                    }
-                }
-            }
-
+            melt();
 
             // 1년 지남 (한 번 녹임)
             ans+=1;
@@ -95,7 +93,7 @@ public class Main {
                     }
                 }
             }
-            if(cnt==0){
+            if(cnt==0){ // 덩어리가 하나도 안 남았으면
                 ans = 0;
                 return;
             }
