@@ -1,6 +1,7 @@
-# input = sys.stdin.readline
+import sys
+input = sys.stdin.readline
 
-n = int(input())
+n = int(input().strip())
 
 for _ in range(n):
 	l = list(input().strip())
