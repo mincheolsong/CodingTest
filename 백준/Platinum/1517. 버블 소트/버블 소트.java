@@ -5,8 +5,8 @@ import java.util.*;
 public class Main {
 
     static int N;
-    static long[] a;
-    static long[] sorted;
+    static int[] a;
+    static int[] sorted;
     static long cnt;
 
     static void merge(int start,int mid,int end){
@@ -54,8 +54,8 @@ public class Main {
         StringTokenizer st = null;
 
         N = Integer.parseInt(br.readLine());
-        a = new long[N];
-        sorted = new long[N];
+        a = new int[N];
+        sorted = new int[N];
 
         st = new StringTokenizer(br.readLine());
         for(int i=0;i<N;i++){
