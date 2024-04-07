@@ -71,10 +71,6 @@ public class Main {
                     continue;
                 }
 
-//                if(arr[nr][nc]==-2 && ( (nr==0 && nc==N-1) || (nr==0 && nc==0) || (nr==N-1 && nc==0) || (nr==N-1 && nc==N-1))){
-//                    visited[nr][nc]=true;
-//                    continue;
-//                }
 
                 if(arr[nr][nc]==0){
                     cnt+=1;
@@ -90,8 +86,7 @@ public class Main {
             }
         }
 
-       /*System.out.println("last_sec : " + last_sec);
-        System.out.println("cnt : " + cnt);*/
+
 
         return new int[]{-1,-1};
     }
@@ -107,10 +102,7 @@ public class Main {
                 ans = Math.min(ans,result[1]);
             }
 
-            /*for(int i=0;i<N;i++){
-                System.out.println(Arrays.toString(copy_arr[i]));
-            }
-            System.out.println("================");*/
+
             return;
         }
 
@@ -147,8 +139,8 @@ public class Main {
                 }
             }
         }
-//        System.out.println("goal : " + goal);
-        if(goal==0) ans = 0;
+
+        if(goal==0) ans = 0; // 빈 칸이 하나도 없는 경우 정답은 0초임
         else solve(0,0);
 
         System.out.println(ans==INF?-1:ans);
