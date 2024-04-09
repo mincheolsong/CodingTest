@@ -92,7 +92,7 @@ public class Main {
         T = Integer.parseInt(st.nextToken());
         circle = new List[N+1];
         for(int i=1;i<N+1;i++){
-            circle[i] = new LinkedList<>();
+            circle[i] = new ArrayList<>();
         }
 
         for(int n=1;n<=N;n++){
