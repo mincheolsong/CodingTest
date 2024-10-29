@@ -1,57 +1,66 @@
-import java.io.*;
+
+
 import java.util.*;
+import java.io.*;
 
 public class Main {
 
     static int N,M;
-    static int[] arr;
+    static int[] result;
+    static int[] input;
     static boolean[] visited;
-    static int[] tmp;
-    static LinkedHashSet<String> ans;
-    static void solve(int n){
-        if(n==M){
-            StringBuilder sb = new StringBuilder();
-            for(int p : tmp){
-                sb.append(p).append(' ');
+    static StringBuilder sb;
+    static Set<String> set;
+    static void solve(int cnt){
+
+        if(cnt==M){
+            sb = new StringBuilder();
+            for(int i=0;i<M;i++){
+                sb.append(result[i]).append(" ");
             }
-            ans.add(sb.toString());
+            String result = sb.toString();
+
+            if(!set.contains(result)){
+                set.add(result);
+                System.out.println(result);
+            }
             return;
         }
 
         for(int i=0;i<N;i++){
             if(visited[i]) continue;
-            visited[i]=true;
-            tmp[n]=arr[i];
-            solve(n+1);
-            visited[i]=false;
+
+            visited[i] = true;
+            result[cnt] = input[i];
+
+            solve(cnt+1);
+            visited[i] = false;
         }
+
     }
 
-
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-
-        arr = new int[N];
+        input = new int[N];
+        result = new int[M];
         visited = new boolean[N];
-        tmp = new int[M];
-        ans = new LinkedHashSet<>();
 
+        set = new HashSet<>();
 
         st = new StringTokenizer(br.readLine());
         for(int i=0;i<N;i++){
-            arr[i] = Integer.parseInt(st.nextToken());
+            input[i] = Integer.parseInt(st.nextToken());
         }
-        Arrays.sort(arr);
 
+        Arrays.sort(input);
         solve(0);
 
-        ans.forEach(System.out::println);
 
 
     }
-
 }
+
