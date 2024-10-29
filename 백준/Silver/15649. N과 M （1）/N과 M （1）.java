@@ -8,14 +8,14 @@ public class Main {
     static int N,M;
     static int[] result;
     static boolean[] visited;
+    static StringBuilder sb;
+    static void solve(int cnt){
 
-    static void solve(int start, int cnt, int target){
-
-        if(cnt==target){
+        if(cnt==M){
             for(int i=0;i<M;i++){
-                System.out.print(result[i]+ " ");
+                sb.append(result[i]).append(" ");
             }
-            System.out.println();
+            sb.append("\n");
             return;
         }
 
@@ -24,7 +24,7 @@ public class Main {
 
             result[cnt] = i;
             visited[i] = true;
-            solve(i+1,cnt+1,target);
+            solve(cnt+1);
             visited[i] = false;
         }
 
@@ -38,8 +38,13 @@ public class Main {
         M = Integer.parseInt(st.nextToken());
         result = new int[M];
         visited = new boolean[N+1];
+        sb = new StringBuilder();
 
-        solve(1,0,M);
+        solve(0);
+
+        System.out.println(sb.toString());
+        
+
     }
 }
 
