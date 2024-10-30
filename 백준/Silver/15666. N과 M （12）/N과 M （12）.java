@@ -1,60 +1,56 @@
-import java.io.*;
+
 import java.util.*;
+import java.io.*;
 
 public class Main {
 
-    // boj 15666 N과 M(12)
-    // back tracking
-    // 사전 순으로 증가하는 순서로 출력하기 위해 입력을 정렬
-    // 중복 방지를 위해 set을 활용
-
-
-
     static int N,M;
-    static int[] arr;
-    static Set<String> set;
-    static int[] result;
+    static List<Integer> list;
+    static Set<Integer> set;
+    static StringBuilder sb = new StringBuilder();
 
-    static void solve(int n,int i){
-        if(n==M){
-            StringBuilder sb = new StringBuilder();
-            for(int r : result){
-                sb.append(r).append(' ');
+    static int[] comb;
+
+    static void solve(int start, int cnt){
+        if(cnt == M){
+            for(int i=0;i<M;i++){
+                sb.append(comb[i]).append(" ");
             }
-            if(!set.contains(sb.toString())){ // 중복 검사
-                System.out.println(sb.toString());
-                set.add(sb.toString());
-            }
+            sb.append("\n");
             return;
         }
 
-        for(int j=i;j<N;j++){
-            result[n]=arr[j];
-            solve(n+1,j);
+        for(int i=start;i<N;i++){
+            comb[cnt] = list.get(i);
+            solve(i,cnt+1);
         }
-
     }
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-        arr = new int[N];
+        list = new ArrayList<>();
+        comb = new int[M];
         set = new HashSet<>();
-        result = new int[M];
 
         st = new StringTokenizer(br.readLine());
         for(int i=0;i<N;i++){
-            arr[i] = Integer.parseInt(st.nextToken());
+            set.add(Integer.parseInt(st.nextToken()));
         }
 
-        Arrays.sort(arr); // 사전 순으로 출력하기 위해 입력을 오름차순 정렬
+        for(Integer i : set){
+            list.add(i);
+        }
+
+        Collections.sort(list);
+        N = list.size();
 
         solve(0,0);
 
-
+        System.out.print(sb.toString());
     }
-
 }
+
