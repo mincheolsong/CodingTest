@@ -37,8 +37,8 @@ class Solution {
             robot.goal_idx += 1;
         }
         
-        if(robot.goal_idx == robot.goal.length){
-            map[robot.r][robot.c]-=1;
+        if(robot.goal_idx == robot.goal.length){ // ArrayIndexOutofBound 에러를 해결한 코드
+            map[robot.r][robot.c]-=1; // 최종 목적지에 도달한 코드는 map을 갱신하는 move가 실행되지 않기 때문에 여기서 갱신
             return false;
         }
         
@@ -93,8 +93,8 @@ class Solution {
             for(int i=0;i<q_size;i++){ // 로봇 이동시키기
                 Robot robot = q.pollFirst(); 
                 
-                if(find_direct(robot,points)){ // 방향 찾기 + 끝까지 도달한 로봇인지 판단
-                     move(robot); // 이동시키기
+                if(find_direct(robot,points)){ // 방향 찾기 + 끝까지 도달한 로봇인지 판단 (ArrayIndexOutOfBound 에러를 위해서)
+                    move(robot); // 이동시키기
                     q.offer(robot);
                 }; 
         
