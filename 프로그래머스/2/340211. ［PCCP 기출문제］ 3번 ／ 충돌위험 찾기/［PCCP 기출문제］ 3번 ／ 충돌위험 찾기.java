@@ -3,17 +3,15 @@ import java.io.*;
 
 public class Robot{
     int r,c;
-    int goal_idx;
-    int dir; // 현재 이동해야 하는 방향
-    boolean is_out;
     int[] goal; // 목표
-    
+    int goal_idx; // 목표(goal[]) 인덱스
+    int dir; // 이동해야 하는 방향
+  
     public Robot(int r,int c,int goal_idx, int[] goal){
         this.r = r;
         this.c = c;
         this.goal_idx = goal_idx;
         this.goal = goal;
-        this.is_out = false;
     }
 }
     
@@ -29,16 +27,16 @@ class Solution {
     int[][] map; // 로봇들의 존재여부를 저장하는 2차원 배열 map[r][c] 는 (r,c) 좌표에 존재하는 로봇의 갯수
     int[] dr = {1,-1,0,0};
     int[] dc = {0,0,1,-1};
-    int routes_length;
+
     
     boolean find_direct(Robot robot,int[][] points){
         
-        if(robot.r == points[robot.goal[robot.goal_idx]][0] && robot.c == points[robot.goal[robot.goal_idx]][1] ){
+        if(robot.r == points[robot.goal[robot.goal_idx]][0] && robot.c == points[robot.goal[robot.goal_idx]][1] ){ // 현재 goal에 도달한 경우
             robot.goal_idx += 1;
         }
         
-        if(robot.goal_idx == robot.goal.length){ // ArrayIndexOutofBound 에러를 해결한 코드
-            map[robot.r][robot.c]-=1; // 최종 목적지에 도달한 코드는 map을 갱신하는 move가 실행되지 않기 때문에 여기서 갱신
+        if(robot.goal_idx == robot.goal.length){ // 최종 목적지에 도달한 경우 (ArrayIndexOutofBound 에러를 해결한 코드)
+            map[robot.r][robot.c]-=1; // map을 갱신하는 move가 실행되지 않기 때문에 여기서 갱신
             return false;
         }
         
@@ -71,25 +69,28 @@ class Solution {
         
         int collapse_cnt = 0;
         Deque<Robot> q = new ArrayDeque<>();
+        
         for(Robot robot : robots){
             q.offer(robot);
         }
         
-        while(!q.isEmpty()){
+        while(!q.isEmpty()){ // 충돌확인할 때 100 x 100 배열을 다 확인하는 것이 아닌, queue를 활용해서 robot만큼만 확인
             int q_size = q.size();
             
-            boolean[][] visited = new boolean[100][100];
-            for(int i=0;i<q_size;i++){ // 충돌 갯수 확인
+            
+            // 1. 충돌 확인
+            boolean[][] visited = new boolean[100][100]; // 충돌여부 체크 배열
+            
+            for(int i=0;i<q_size;i++){ 
                 Robot robot = q.pollFirst();
                 if(!visited[robot.r][robot.c] && map[robot.r][robot.c] > 1){
-                    // System.out.printf("%d , %d에서 충돌 발생\n",robot.r,robot.c);
                     collapse_cnt += 1;
                     visited[robot.r][robot.c] = true;
                 }
                 q.offer(robot); // 원상복구
             }
             
-            
+            // 2. 로봇 이동
             for(int i=0;i<q_size;i++){ // 로봇 이동시키기
                 Robot robot = q.pollFirst(); 
                 
@@ -99,11 +100,8 @@ class Solution {
                 }; 
         
             }
-            
         }
-        
         return collapse_cnt;
-        
     }
     
   
@@ -111,7 +109,6 @@ class Solution {
     public int solution(int[][] points, int[][] routes){
         int answer = 0;
         robots = new Robot[routes.length];
-        routes_length = routes[0].length;
         map = new int[100][100];
         
         for(int i=0;i<points.length;i++){
