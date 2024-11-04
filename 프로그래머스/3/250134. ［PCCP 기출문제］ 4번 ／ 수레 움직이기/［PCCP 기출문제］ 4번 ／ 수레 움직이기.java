@@ -29,6 +29,7 @@ class Solution {
         if(red_r == blue_r && red_c == blue_c){
             return;
         }
+        
         if(red_arr == 1 && blue_arr == 1){
             answer = Math.min(answer,cnt);
             return;
@@ -43,7 +44,7 @@ class Solution {
                     if(blue_nc<0 || blue_nc>=M) continue;
                 
                     if(b_chk[blue_nr][blue_nc]) continue; // 이미 방문한 위치
-                    if(blue_nr == red.r && blue_nc == red.c) continue; // 빨간수래
+                    if(blue_nr == red.r && blue_nc == red.c) continue; // 빨간수레
                     if(maze[blue_nr][blue_nc]==5) continue; // 벽
                 
                     b_chk[blue_nr][blue_nc] = true;
@@ -70,7 +71,7 @@ class Solution {
                 if(red_nc<0 || red_nc>=M) continue;
             
                 if(r_chk[red_nr][red_nc]) continue; // 이미 방문한 위치
-                if(red_nr==blue.r && red_nc == blue.c) continue; // 파란수래
+                if(red_nr==blue.r && red_nc == blue.c) continue; // 파란수레
                 if(maze[red_nr][red_nc]==5) continue; // 벽
             
                 r_chk[red_nr][red_nc] = true;
@@ -96,7 +97,7 @@ class Solution {
                 if(red_nc<0 || red_nc>=M) continue;
             
                 if(r_chk[red_nr][red_nc]) continue; // 이미 방문한 위치
-                // if(red_nr==blue.r && red_nc == blue.c) continue; // 파란수래
+                // if(red_nr==blue.r && red_nc == blue.c) continue; // 파란수레
                 if(maze[red_nr][red_nc]==5) continue; // 벽
             
                 r_chk[red_nr][red_nc] = true;
@@ -116,9 +117,9 @@ class Solution {
                     if(blue_nc<0 || blue_nc>=M) continue;
                     
                     if(b_chk[blue_nr][blue_nc]) continue; // 이미 방문한 위치
-                    if(red_nr == blue_r && red_nc == blue_c && blue_nr == red_r && blue_nc == red_c) continue;
+                    if(red_nr == blue_r && red_nc == blue_c && blue_nr == red_r && blue_nc == red_c) continue; // 스위칭 되는 경우
                         
-                    // if(blue_nr == red.r && blue_nc == red.c) continue; // 빨간수래
+                    // if(blue_nr == red.r && blue_nc == red.c) continue; // 빨간수레
                     if(maze[blue_nr][blue_nc]==5) continue; // 벽
                 
                     b_chk[blue_nr][blue_nc] = true;
