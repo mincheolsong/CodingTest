@@ -10,18 +10,14 @@ import java.util.*;
 class Solution {
     public int solution(int[] elements) {
         int answer = 0;
-        int[] copy = new int[elements.length*2-1];
+        int e_length = elements.length;
         Set<Integer> set = new HashSet<>();
         
-        for(int i=0;i<copy.length;i++){
-            copy[i] = elements[i%elements.length];            
-        }
-        
-        for(int size=1;size<elements.length;size++){
-            for(int i=0;i<elements.length;i++){
+        for(int size=1;size<e_length;size++){
+            for(int i=0;i<e_length;i++){
                 int sum = 0;
                 for(int j=i;j<i+size;j++){
-                    sum += copy[j];
+                    sum += elements[j%e_length];
                 }
                 set.add(sum);
             }
