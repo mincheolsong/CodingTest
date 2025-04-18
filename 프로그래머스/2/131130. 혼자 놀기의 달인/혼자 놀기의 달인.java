@@ -32,10 +32,7 @@ class Solution {
             makeGroup(cards,i,groupNum,1);
             groupNum += 1;
         }
-        // System.out.println(Arrays.toString(group));
-        // for(int i=0;i<groupSize.size();i++){
-        //     System.out.print(groupSize.get(i)+ " ");
-        // }
+    
         if(groupSize.size()==1) return answer = 0;
         
         Collections.sort(groupSize,Collections.reverseOrder());
