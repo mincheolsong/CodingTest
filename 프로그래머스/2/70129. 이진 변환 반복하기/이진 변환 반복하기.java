@@ -25,7 +25,7 @@ class Solution {
             String conv_s = s.replace("0", "");
             
             conv_cnt += 1;
-            zero_cnt += ( s.length() - conv_s.length());
+            zero_cnt += ( s.length() - conv_s.length() );
             s = convert(conv_s.length(),2);
         }
         
