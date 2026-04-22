@@ -1,6 +1,6 @@
 import java.util.*;
 
-// 조합 만들기 (1개 ~ c개)
+
 class Solution {
     
     int R,C;
@@ -10,8 +10,6 @@ class Solution {
     int answer;
     
     boolean check(){
-        
-        StringBuilder combSb = new StringBuilder();
         
         for(String key : keySet){
             int cnt = 0;
@@ -23,8 +21,10 @@ class Solution {
         
         Set<String> check = new HashSet<>();
         
+		StringBuilder sb;
+		
         for(int i=0;i<R;i++){
-            StringBuilder sb = new StringBuilder();
+            sb = new StringBuilder();
             for(int j=0;j<comb.length;j++){
                 sb.append(relation[i][comb[j]]).append(",");
             }
@@ -34,6 +34,12 @@ class Solution {
             check.add(sb.toString());
         }
         
+		// true인 경우
+		sb = new StringBuilder();
+        for(int i=0;i<comb.length;i++){
+            sb.append(comb[i]);
+        }
+        keySet.add(sb.toString());
         
         return true;
     }
@@ -42,11 +48,6 @@ class Solution {
         if(n == goal){
             if(check()){
                 answer+= 1;  
-                StringBuilder sb = new StringBuilder();
-                for(int i=0;i<comb.length;i++){
-                    sb.append(comb[i]);
-                }
-                keySet.add(sb.toString());
             }
             return;
         }
