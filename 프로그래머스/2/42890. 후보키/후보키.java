@@ -4,48 +4,52 @@ import java.util.*;
 class Solution {
     
     int R,C;
-    int[] comb;
+	int comb;
     String[][] relation;
-    Set<String> keySet;
+    Set<Integer> keySet;
     int answer;
     
-    boolean check(){
-        
-        for(String key : keySet){
-            int cnt = 0;
-            for(int i=0;i<comb.length;i++){
-                if(key.contains(String.valueOf(comb[i]))) cnt += 1;
-            }   
-            if(key.length() == cnt) return false;
+	boolean isMinimal(){
+		for(Integer key : keySet){
+			if((key & comb ) == key) return false;
         }
-        
-        Set<String> check = new HashSet<>();
+		return true;
+	}
+	
+	boolean isUnique(){
+		Set<String> check = new HashSet<>();
         
 		StringBuilder sb;
 		
         for(int i=0;i<R;i++){
             sb = new StringBuilder();
-            for(int j=0;j<comb.length;j++){
-                sb.append(relation[i][comb[j]]).append(",");
-            }
+            for(int j=0;j<C;j++){
+				if((comb & (1 << j)) != 0){
+					sb.append(relation[i][j]).append("#^,");
+				}
+			}
             if(check.contains(sb.toString())) {
                 return false;
             }
             check.add(sb.toString());
         }
+		
+		return true;
+	}
+	
+    boolean check(){
+		
+		if(isUnique() && isMinimal()){			
+			keySet.add(comb);
+			return true;	
+		}
         
-		// true인 경우
-		sb = new StringBuilder();
-        for(int i=0;i<comb.length;i++){
-            sb.append(comb[i]);
-        }
-        keySet.add(sb.toString());
-        
-        return true;
+		return false;
     }
     
     void solve(int start, int n, int goal){
         if(n == goal){
+            System.out.println(Integer.toBinaryString(comb));
             if(check()){
                 answer+= 1;  
             }
@@ -53,8 +57,9 @@ class Solution {
         }
         
         for(int i=start;i<C;i++){
-            comb[n] = i;
+            comb |= 1 << i;
             solve(i+1, n+1, goal);
+			comb &= ~(1 << i);
         }
     }
     
@@ -66,7 +71,7 @@ class Solution {
         keySet = new HashSet<>();
         
         for(int i=1;i<=C;i++){
-            comb = new int[i];
+            comb = 0;
             solve(0,0,i);
         }
         
