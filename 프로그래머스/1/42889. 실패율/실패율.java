@@ -4,10 +4,6 @@ class Stage implements Comparable<Stage>{
     int n;
     double failure;
     
-    public Stage(int n){
-        this.n = n;
-    }
-    
     public Stage(int n,double failure){
         this.n = n;
         this.failure = failure;
@@ -29,46 +25,27 @@ class Stage implements Comparable<Stage>{
 class Solution {
     public int[] solution(int N, int[] stages) {
         int[] answer = new int[N];
+        int[] countArr = new int[N+1];
+        Stage[] stageArr = new Stage[N];
         
-        Arrays.sort(stages);
-        
-        int startIdx = 0;
-        PriorityQueue<Stage> pq = new PriorityQueue<>();
-        
-        for(int i = 1; i <= N; i++){
-            Stage stg = new Stage(i);
-
-            if(stages[startIdx] == i){
-                int endIdx = startIdx;
-                int cnt = 0;
-                while(endIdx < stages.length && stages[endIdx] == i){
-                    cnt += 1;
-                    endIdx += 1;
-                }
-                stg.failure = (double)cnt / (double)(stages.length - startIdx);
-                // System.out.printf("stage : %d, failure : %d / %d \n", i, cnt, stages.length - startIdx);
-                
-                pq.offer(stg);
-                
-                if(endIdx == stages.length){
-                    for(int j=i+1;j<=N;j++){
-                        pq.offer(new Stage(j,0.0));
-                    }
-                    break;
-                }else{
-                    startIdx = endIdx;
-                }
-                
-            }else{
-                stg.failure = 0.0;
-                pq.offer(stg);
-            }
+        for(int i=0;i<stages.length;i++){
+            if(stages[i]<N+1) countArr[stages[i]] += 1;
         }
         
+        int leftCnt = stages.length;
+        for(int i=1;i<N+1;i++){
+            double failure = 0.0;
+            
+            if(leftCnt > 0) failure = countArr[i] / (double)leftCnt;
+            
+            stageArr[i-1] = new Stage(i, failure);
+            leftCnt -= countArr[i];
+        }
         
-        int answerIdx = 0;
-        while(!pq.isEmpty()){
-            answer[answerIdx++] = pq.poll().n;
+        Arrays.sort(stageArr);
+        
+        for(int i=0;i<N;i++){
+            answer[i] = stageArr[i].n;
         }
         
         return answer;
